@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Modern Scientific Calculator</title>
+  <style>
+    body {
+  font-family: "Segoe UI", sans-serif;
+  background: #1e1e2f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.calculator {
+  background: #2a2a40;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  width: 320px;
+}
+
+#display {
+  width: 100%;
+  height: 50px;
+  font-size: 24px;
+  text-align: right;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background: #1e1e2f;
+  color: #ffffff;
+  outline: none;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+button {
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #3e3e55;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #57576f;
+}
+
+.equal {
+  background-color: #4caf50;
+  color: white;
+}
+
+.clear,
+.backspace {
+  background-color: #e53935;
+  color: white;
+}
+
+.span-2 {
+  grid-column: span 2;
+}
+
+.span-3 {
+  grid-column: span 3;
+}
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button onclick="insertFunction('sin')">sin</button>
+      <button onclick="insertFunction('cos')">cos</button>
+      <button onclick="insertFunction('tan')">tan</button>
+      <button onclick="insert('π')">π</button>
+      <button onclick="insert('^')">x²</button>
+
+      <button onclick="insertFunction('log')">log</button>
+      <button onclick="insertFunction('ln')">ln</button>
+      <button onclick="insertFunction('√')">√</button>
+      <button onclick="insert('(')">(</button>
+      <button onclick="insert(')')">)</button>
+
+      <button onclick="insert('7')">7</button>
+      <button onclick="insert('8')">8</button>
+      <button onclick="insert('9')">9</button>
+      <button onclick="insert('/')">÷</button>
+      <button class="backspace" onclick="backspace()">⌫</button>
+
+      <button onclick="insert('4')">4</button>
+      <button onclick="insert('5')">5</button>
+      <button onclick="insert('6')">6</button>
+      <button onclick="insert('*')">×</button>
+      <button class="clear" onclick="clearDisplay()">C</button>
+
+      <button onclick="insert('1')">1</button>
+      <button onclick="insert('2')">2</button>
+      <button onclick="insert('3')">3</button>
+      <button onclick="insert('-')">−</button>
+      <button onclick="insert('e')">e</button>
+
+      <button onclick="insert('0')">0</button>
+      <button onclick="insert('.')">.</button>
+      <button onclick="insert('+')">+</button>
+      <button class="equal span-2" onclick="calculate()">=</button>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById("display");
+
+    function insert(value) {
+      display.value += value;
+    }
+
+    function insertFunction(func) {
+      if (func === "√") {
+        display.value += "√(";
+      } else {
+        display.value += func + "(";
+      }
+    }
+
+    function clearDisplay() {
+      display.value = "";
+    }
+
+    function backspace() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        let expression = display.value
+          .replace(/π/g, "Math.PI")
+          .replace(/e/g, "Math.E")
+          .replace(/√\(/g, "Math.sqrt(")
+          .replace(/sin\(/g, "Math.sin(")
+          .replace(/cos\(/g, "Math.cos(")
+          .replace(/tan\(/g, "Math.tan(")
+          .replace(/log\(/g, "Math.log10(")
+          .replace(/ln\(/g, "Math.log(")
+          .replace(/(\d+)\^(\d+)/g, "Math.pow($1,$2)");
+
+        display.value = eval(expression);
+      } catch {
+        display.value = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
